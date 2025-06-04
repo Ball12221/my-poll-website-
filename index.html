@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>โพลเพศ</title>
+  <title>โพลเพศสภาพ</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
@@ -11,7 +11,7 @@
     }
     body {
       font-family: 'Prompt', sans-serif;
-      background: linear-gradient(to bottom, #1e1e1e, #2c2c2c);
+      background: linear-gradient(to bottom, #1c1c1c, #2e2e2e);
       margin: 0;
       padding: 30px;
       color: #e0e0e0;
@@ -23,15 +23,15 @@
       gap: 30px;
     }
     .poll-card, .vote-panel {
-      background-color: #333;
+      background-color: #2a2a2a;
       border-radius: 16px;
       padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
       width: 100%;
       max-width: 420px;
     }
     .option {
-      background-color: #444;
+      background-color: #3a3a3a;
       padding: 15px;
       margin: 10px 0;
       border-radius: 12px;
@@ -44,21 +44,25 @@
       background-color: #555;
       transform: translateY(-2px);
     }
-    input[type="text"], button {
+    input[type="text"] {
       width: 100%;
       padding: 12px;
       margin-top: 10px;
       font-size: 16px;
       border-radius: 10px;
       border: none;
-    }
-    input[type="text"] {
-      background-color: #222;
-      color: #fff;
+      background: #1e1e1e;
+      color: white;
     }
     button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 10px;
       background-color: #5cacee;
       color: white;
+      border: none;
       cursor: pointer;
     }
     .vote-panel ul {
@@ -66,192 +70,174 @@
       padding: 0;
     }
     .vote-panel li {
-      background: #444;
+      background: #3c3c3c;
       padding: 10px;
       margin-bottom: 5px;
       border-radius: 8px;
     }
-    #clearButton {
+    .reset-button {
       position: fixed;
       bottom: 20px;
       right: 20px;
-    }
-    #clearButton button {
-      background-color: #cc4444;
+      background-color: #e74c3c;
       color: white;
-      border: none;
       padding: 12px 20px;
       border-radius: 10px;
+      border: none;
       font-size: 14px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: 0.2s;
     }
-    #clearButton button:hover {
-      background-color: #ff5555;
-    }
-
-    /* Popup styles */
-    #popup {
-      display: none;
+    .popup {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.75);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-    .popup-box {
-      background: #222;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1e1e1e;
       padding: 20px;
       border-radius: 12px;
-      text-align: center;
-      color: #fff;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+      display: none;
+      color: white;
     }
-    .number-grid {
+    .popup-grid {
       display: grid;
       grid-template-columns: repeat(3, 60px);
-      gap: 10px;
-      justify-content: center;
+      grid-gap: 10px;
       margin-top: 10px;
     }
-    .number-grid button {
+    .popup-grid button {
       font-size: 20px;
-      padding: 15px;
-      border: none;
-      border-radius: 10px;
-      background-color: #444;
-      color: white;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .number-grid button:hover {
-      background-color: #5cacee;
+      padding: 10px;
+      background: #444;
     }
   </style>
 </head>
 <body>
-
-<div class="container">
-  <div class="poll-card">
-    <h2>คุณระบุเพศสภาพอย่างไร?</h2>
-    <div id="login-area">
-      <input type="text" id="username" placeholder="พิมพ์ชื่อของคุณ...">
-      <button onclick="login()">เข้าสู่ระบบ</button>
+  <div class="container">
+    <div class="poll-card">
+      <h2>คุณระบุเพศสภาพอย่างไร?</h2>
+      <div id="login-area">
+        <input type="text" id="username" placeholder="พิมพ์ชื่อของคุณ...">
+        <button onclick="login()">เข้าสู่ระบบ</button>
+      </div>
+      <div id="poll-area" style="display:none;">
+        <p class="greeting">👋 สวัสดีคุณ <strong id="userDisplay"></strong> เลือกเพศสภาพของคุณ:</p>
+        <div class="option" onclick="vote('ผู้ชาย')">👨 ผู้ชาย</div>
+        <div class="option" onclick="vote('ผู้หญิง')">👩 ผู้หญิง</div>
+        <div class="option" onclick="vote('LGBTQ+')">🏳️‍🌈 LGBTQ+</div>
+        <div class="option" onclick="vote('ไม่ระบุเพศ')">❓ ไม่ระบุเพศ</div>
+        <p class="result" id="result"></p>
+      </div>
     </div>
-    <div id="poll-area" style="display:none;">
-      <p class="greeting">👋 สวัสดีคุณ <strong id="userDisplay"></strong> กรุณาเลือก:</p>
-      <div class="option" onclick="vote('ผู้ชาย')">👨 ผู้ชาย</div>
-      <div class="option" onclick="vote('ผู้หญิง')">👩 ผู้หญิง</div>
-      <div class="option" onclick="vote('LGBTQ+')">🏳️‍🌈 LGBTQ+</div>
-      <div class="option" onclick="vote('ไม่ระบุเพศ')">⚪ ไม่ระบุเพศ</div>
-      <p class="result" id="result"></p>
+
+    <div class="vote-panel" id="votePanel" style="display:none;">
+      <h3>📋 รายชื่อผู้โหวต</h3>
+      <ul id="voteList"></ul>
     </div>
   </div>
 
-  <div class="vote-panel">
-    <h3>📋 รายชื่อผู้โหวต</h3>
-    <ul id="voteList"></ul>
+  <button class="reset-button" onclick="showPopup()">🗑️ ล้างข้อมูลโหวตทั้งหมด</button>
+
+  <div class="popup" id="popup">
+    <p>กรุณาใส่รหัสผ่านเพื่อล้างข้อมูล</p>
+    <div id="pinDisplay" style="font-size: 24px; margin: 10px 0; letter-spacing: 10px;"></div>
+    <div class="popup-grid" id="pinGrid"></div>
+    <button onclick="clearPin()" style="margin-top:10px;">ล้างรหัส</button>
+    <button onclick="hidePopup()" style="margin-top:10px;">ยกเลิก</button>
   </div>
-</div>
 
-<!-- ปุ่มล้าง -->
-<div id="clearButton">
-  <button onclick="showPopup()">🗑️ ล้างข้อมูลโหวตทั้งหมด</button>
-</div>
+  <script>
+    let currentUser = null;
+    let voteData = JSON.parse(localStorage.getItem("votes")) || {};
+    let inputPin = "";
 
-<!-- Popup -->
-<div id="popup">
-  <div class="popup-box">
-    <p>ใส่รหัสผ่าน (2545)</p>
-    <div id="passwordDisplay" style="margin-bottom:10px;">🔒</div>
-    <div class="number-grid" id="numberGrid"></div>
-    <button onclick="cancelPopup()" style="margin-top:10px;">ยกเลิก</button>
-  </div>
-</div>
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      if (!username) {
+        alert("กรุณาใส่ชื่อก่อนโหวต");
+        return;
+      }
+      currentUser = username;
+      document.getElementById("login-area").style.display = "none";
+      document.getElementById("poll-area").style.display = "block";
+      document.getElementById("votePanel").style.display = "block";
+      document.getElementById("userDisplay").textContent = currentUser;
 
-<script>
-  let currentUser = null;
-  let voteData = JSON.parse(localStorage.getItem("votes")) || {};
-  let password = "2545";
-  let enteredPass = "";
-
-  function login() {
-    const username = document.getElementById("username").value.trim();
-    if (!username) {
-      alert("กรุณาใส่ชื่อก่อนโหวต");
-      return;
+      if (voteData[currentUser]) {
+        document.getElementById("result").textContent = `คุณเคยเลือก "${voteData[currentUser]}" ไปแล้ว`;
+      }
+      updateVoteList();
     }
-    currentUser = username;
-    document.getElementById("login-area").style.display = "none";
-    document.getElementById("poll-area").style.display = "block";
-    document.getElementById("userDisplay").textContent = currentUser;
 
-    if (voteData[currentUser]) {
-      document.getElementById("result").textContent = `คุณเคยเลือก "${voteData[currentUser]}" ไปแล้ว`;
+    function vote(choice) {
+      if (!currentUser) return;
+      voteData[currentUser] = choice;
+      localStorage.setItem("votes", JSON.stringify(voteData));
+      document.getElementById("result").textContent = `คุณเลือก "${choice}" ขอบคุณที่ร่วมโหวต!`;
+      updateVoteList();
     }
-    updateVoteList();
-  }
 
-  function vote(choice) {
-    if (!currentUser) return;
-    voteData[currentUser] = choice;
-    localStorage.setItem("votes", JSON.stringify(voteData));
-    document.getElementById("result").textContent = `คุณเลือก "${choice}" ขอบคุณที่ร่วมโหวต!`;
-    updateVoteList();
-  }
-
-  function updateVoteList() {
-    const list = document.getElementById("voteList");
-    list.innerHTML = "";
-    for (let user in voteData) {
-      const li = document.createElement("li");
-      li.textContent = `${user} → ${voteData[user]}`;
-      list.appendChild(li);
-    }
-  }
-
-  function showPopup() {
-    enteredPass = "";
-    document.getElementById("popup").style.display = "flex";
-    renderNumberPad();
-    document.getElementById("passwordDisplay").textContent = "🔒";
-  }
-
-  function cancelPopup() {
-    document.getElementById("popup").style.display = "none";
-  }
-
-  function renderNumberPad() {
-    const grid = document.getElementById("numberGrid");
-    grid.innerHTML = "";
-    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    numbers.sort(() => Math.random() - 0.5);
-    numbers.forEach(num => {
-      const btn = document.createElement("button");
-      btn.textContent = num;
-      btn.onclick = () => enterDigit(num);
-      grid.appendChild(btn);
-    });
-  }
-
-  function enterDigit(digit) {
-    enteredPass += digit;
-    document.getElementById("passwordDisplay").textContent = "🔒 " + "*".repeat(enteredPass.length);
-    if (enteredPass.length >= password.length) {
-      if (enteredPass === password) {
-        localStorage.removeItem("votes");
-        alert("✅ ล้างข้อมูลโหวตเรียบร้อยแล้ว!");
-        location.reload();
-      } else {
-        alert("❌ รหัสผิด");
-        cancelPopup();
+    function updateVoteList() {
+      const list = document.getElementById("voteList");
+      list.innerHTML = "";
+      for (let user in voteData) {
+        const li = document.createElement("li");
+        li.textContent = `${user} → ${voteData[user]}`;
+        list.appendChild(li);
       }
     }
-  }
-</script>
 
+    function showPopup() {
+      inputPin = "";
+      document.getElementById("popup").style.display = "block";
+      updatePinDisplay();
+      generatePinPad();
+    }
+
+    function hidePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function generatePinPad() {
+      const grid = document.getElementById("pinGrid");
+      grid.innerHTML = "";
+      const numbers = [1,2,3,4,5,6,7,8,9];
+      numbers.sort(() => Math.random() - 0.5);
+      numbers.forEach(num => {
+        const btn = document.createElement("button");
+        btn.textContent = num;
+        btn.onclick = () => enterPin(num);
+        grid.appendChild(btn);
+      });
+    }
+
+    function enterPin(num) {
+      inputPin += num;
+      updatePinDisplay();
+      if (inputPin.length === 4) {
+        if (inputPin === "2545") {
+          localStorage.removeItem("votes");
+          voteData = {};
+          updateVoteList();
+          alert("ล้างข้อมูลสำเร็จแล้ว");
+          hidePopup();
+          location.reload();
+        } else {
+          alert("รหัสผ่านไม่ถูกต้อง");
+          inputPin = "";
+          updatePinDisplay();
+        }
+      }
+    }
+
+    function updatePinDisplay() {
+      document.getElementById("pinDisplay").textContent = inputPin.replace(/./g, "●");
+    }
+
+    function clearPin() {
+      inputPin = "";
+      updatePinDisplay();
+    }
+  </script>
 </body>
 </html>
