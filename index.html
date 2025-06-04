@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>โพลสัตว์น่ารัก</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* วาง CSS ทั้งหมดที่ให้ไว้ในคำตอบก่อนหน้านี้ */
+    /* ⬇ ด้านล่างคือตัวอย่าง CSS ตัดมาบางส่วน */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(to bottom, #f0f8ff, #ffffff);
+      margin: 0;
+      padding: 30px;
+      color: #333;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+    .poll-card, .vote-panel {
+      background-color: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+      width: 100%;
+      max-width: 420px;
+    }
+    .option {
+      background-color: #f1f9ff;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+      font-size: 18px;
+    }
+    .option:hover {
+      background-color: #d6ecff;
+      transform: translateY(-2px);
+    }
+    input[type="text"], button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+    }
+    button {
+      background-color: #5cacee;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .vote-panel ul {
+      list-style: none;
+      padding: 0;
+    }
+    .vote-panel li {
+      background: #f9f9f9;
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="poll-card">
+      <h2>คุณชอบสัตว์ชนิดไหนมากที่สุด?</h2>
+      <div id="login-area">
+        <input type="text" id="username" placeholder="พิมพ์ชื่อของคุณ...">
+        <button onclick="login()">เข้าสู่ระบบ</button>
+      </div>
+      <div id="poll-area" style="display:none;">
+        <p class="greeting">👋 สวัสดีคุณ <strong id="userDisplay"></strong> เลือกสัตว์ที่คุณชอบ:</p>
+        <div class="option" onclick="vote('แมว')">🐱 แมว</div>
+        <div class="option" onclick="vote('หมา')">🐶 หมา</div>
+        <div class="option" onclick="vote('กระต่าย')">🐰 กระต่าย</div>
+        <p class="result" id="result"></p>
+      </div>
+    </div>
+
+    <div class="vote-panel">
+      <h3>📋 รายชื่อผู้โหวต</h3>
+      <ul id="voteList"></ul>
+    </div>
+  </div>
+
+  <script>
+    let currentUser = null;
+    let voteData = JSON.parse(localStorage.getItem("votes")) || {};
+
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      if (!username) {
+        alert("กรุณาใส่ชื่อก่อนโหวต");
+        return;
+      }
+      currentUser = username;
+      document.getElementById("login-area").style.display = "none";
+      document.getElementById("poll-area").style.display = "block";
+      document.getElementById("userDisplay").textContent = currentUser;
+
+      if (voteData[currentUser]) {
+        document.getElementById("result").textContent = `คุณเคยเลือก "${voteData[currentUser]}" ไปแล้ว`;
+      }
+      updateVoteList();
+    }
+
+    function vote(choice) {
+      if (!currentUser) return;
+
+      voteData[currentUser] = choice;
+      localStorage.setItem("votes", JSON.stringify(voteData));
+
+      document.getElementById("result").textContent = `คุณเลือก "${choice}" ขอบคุณที่ร่วมโหวต!`;
+      updateVoteList();
+    }
+
+    function updateVoteList() {
+      const list = document.getElementById("voteList");
+      list.innerHTML = "";
+      for (let user in voteData) {
+        const li = document.createElement("li");
+        li.textContent = `${user} → ${voteData[user]}`;
+        list.appendChild(li);
+      }
+    }
+  </script>
+
+</body>
+</html>
