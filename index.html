@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>โพลเพศของคุณ</title>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>โพลเพศ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
     }
     body {
       font-family: 'Prompt', sans-serif;
-      background: linear-gradient(to bottom, #1c1c1c, #2e2e2e);
+      background: linear-gradient(to bottom, #1e1e1e, #2c2c2c);
       margin: 0;
       padding: 30px;
       color: #e0e0e0;
@@ -23,7 +23,7 @@
       gap: 30px;
     }
     .poll-card, .vote-panel {
-      background-color: #2f2f2f;
+      background-color: #333;
       border-radius: 16px;
       padding: 30px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -39,10 +39,9 @@
       transition: 0.3s;
       text-align: center;
       font-size: 18px;
-      color: #fff;
     }
     .option:hover {
-      background-color: #5c5c5c;
+      background-color: #555;
       transform: translateY(-2px);
     }
     input[type="text"], button {
@@ -54,7 +53,7 @@
       border: none;
     }
     input[type="text"] {
-      background-color: #3a3a3a;
+      background-color: #222;
       color: #fff;
     }
     button {
@@ -67,13 +66,29 @@
       padding: 0;
     }
     .vote-panel li {
-      background: #3a3a3a;
+      background: #444;
       padding: 10px;
       margin-bottom: 5px;
       border-radius: 8px;
     }
-    .greeting {
-      margin-bottom: 10px;
+    #clearButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+    #clearButton button {
+      background-color: #cc4444;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: 0.2s;
+    }
+    #clearButton button:hover {
+      background-color: #ff5555;
     }
   </style>
 </head>
@@ -81,17 +96,17 @@
 
   <div class="container">
     <div class="poll-card">
-      <h2>เพศของคุณคืออะไร?</h2>
+      <h2>คุณระบุเพศสภาพอย่างไร?</h2>
       <div id="login-area">
         <input type="text" id="username" placeholder="พิมพ์ชื่อของคุณ...">
         <button onclick="login()">เข้าสู่ระบบ</button>
       </div>
       <div id="poll-area" style="display:none;">
-        <p class="greeting">👋 สวัสดีคุณ <strong id="userDisplay"></strong> กรุณาเลือกเพศของคุณ:</p>
-        <div class="option" onclick="vote('ผู้ชาย')">👨‍🦰 ผู้ชาย</div>
-        <div class="option" onclick="vote('ผู้หญิง')">👩‍🦰 ผู้หญิง</div>
+        <p class="greeting">👋 สวัสดีคุณ <strong id="userDisplay"></strong> กรุณาเลือก:</p>
+        <div class="option" onclick="vote('ผู้ชาย')">👨 ผู้ชาย</div>
+        <div class="option" onclick="vote('ผู้หญิง')">👩 ผู้หญิง</div>
         <div class="option" onclick="vote('LGBTQ+')">🏳️‍🌈 LGBTQ+</div>
-        <div class="option" onclick="vote('ไม่ระบุเพศ')">❓ ไม่ระบุเพศ</div>
+        <div class="option" onclick="vote('ไม่ระบุเพศ')">⚪ ไม่ระบุเพศ</div>
         <p class="result" id="result"></p>
       </div>
     </div>
@@ -100,6 +115,11 @@
       <h3>📋 รายชื่อผู้โหวต</h3>
       <ul id="voteList"></ul>
     </div>
+  </div>
+
+  <!-- ปุ่มล้างข้อมูล -->
+  <div id="clearButton">
+    <button onclick="requestClear()">🗑️ ล้างข้อมูลโหวตทั้งหมด</button>
   </div>
 
   <script>
@@ -140,6 +160,17 @@
         const li = document.createElement("li");
         li.textContent = `${user} → ${voteData[user]}`;
         list.appendChild(li);
+      }
+    }
+
+    function requestClear() {
+      const input = prompt("กรุณาใส่รหัสผ่านเพื่อยืนยันการล้างข้อมูล:");
+      if (input === "2545") {
+        localStorage.removeItem("votes");
+        alert("✅ ล้างข้อมูลโหวตเรียบร้อยแล้ว!");
+        location.reload();
+      } else {
+        alert("❌ รหัสผ่านไม่ถูกต้อง");
       }
     }
   </script>
