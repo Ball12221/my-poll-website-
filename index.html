@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>โพลสัตว์น่ารัก</title>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>โพลเพศของคุณ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -23,15 +23,15 @@
       gap: 30px;
     }
     .poll-card, .vote-panel {
-      background-color: #2a2a2a;
+      background-color: #2f2f2f;
       border-radius: 16px;
       padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       width: 100%;
       max-width: 420px;
     }
     .option {
-      background-color: #3a3a3a;
+      background-color: #444;
       padding: 15px;
       margin: 10px 0;
       border-radius: 12px;
@@ -42,7 +42,7 @@
       color: #fff;
     }
     .option:hover {
-      background-color: #505050;
+      background-color: #5c5c5c;
       transform: translateY(-2px);
     }
     input[type="text"], button {
@@ -54,7 +54,7 @@
       border: none;
     }
     input[type="text"] {
-      background-color: #444;
+      background-color: #3a3a3a;
       color: #fff;
     }
     button {
@@ -67,17 +67,13 @@
       padding: 0;
     }
     .vote-panel li {
-      background: #3d3d3d;
+      background: #3a3a3a;
       padding: 10px;
       margin-bottom: 5px;
       border-radius: 8px;
-      color: #ccc;
     }
-    .greeting, .result {
-      color: #ddd;
-    }
-    h2, h3 {
-      color: #ffffff;
+    .greeting {
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -85,16 +81,17 @@
 
   <div class="container">
     <div class="poll-card">
-      <h2>คุณชอบสัตว์ชนิดไหนมากที่สุด?</h2>
+      <h2>เพศของคุณคืออะไร?</h2>
       <div id="login-area">
         <input type="text" id="username" placeholder="พิมพ์ชื่อของคุณ...">
         <button onclick="login()">เข้าสู่ระบบ</button>
       </div>
       <div id="poll-area" style="display:none;">
-        <p class="greeting">👋 สวัสดีคุณ <strong id="userDisplay"></strong> เลือกสัตว์ที่คุณชอบ:</p>
-        <div class="option" onclick="vote('แมว')">🐱 แมว</div>
-        <div class="option" onclick="vote('หมา')">🐶 หมา</div>
-        <div class="option" onclick="vote('กระต่าย')">🐰 กระต่าย</div>
+        <p class="greeting">👋 สวัสดีคุณ <strong id="userDisplay"></strong> กรุณาเลือกเพศของคุณ:</p>
+        <div class="option" onclick="vote('ผู้ชาย')">👨‍🦰 ผู้ชาย</div>
+        <div class="option" onclick="vote('ผู้หญิง')">👩‍🦰 ผู้หญิง</div>
+        <div class="option" onclick="vote('LGBTQ+')">🏳️‍🌈 LGBTQ+</div>
+        <div class="option" onclick="vote('ไม่ระบุเพศ')">❓ ไม่ระบุเพศ</div>
         <p class="result" id="result"></p>
       </div>
     </div>
